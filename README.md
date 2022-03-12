@@ -1,0 +1,1 @@
+# CPyMO-YukimiScript-Template
