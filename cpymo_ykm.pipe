@@ -49,6 +49,7 @@ copy-file %src-file% %dest-file%
 - task Copy-Dir %src% %dst%
 ensure-dir %dst%
 for %i% in (get-files %src%) { 
-    Copy-File %i% "%dst%/%i%"
+    echo "%i%"
+    Copy-File "%src%/%i%" "%dst%/%i%"
 }
 
