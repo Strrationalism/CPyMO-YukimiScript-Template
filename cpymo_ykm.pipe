@@ -1,0 +1,54 @@
+
+- operation ensure-build-dir %build-dir%
+for %i% in [
+    %build-dir%
+    "%build-dir%/bg"
+    "%build-dir%/bgm"
+    "%build-dir%/chara"
+    "%build-dir%/se"
+    "%build-dir%/video"
+    "%build-dir%/system"
+    "%build-dir%/voice"
+    "%build-dir%/script"
+] {
+    ensure-dir %i%
+}
+
+- operation clean-build-dir %build-dir%
+if (dir-exists %build-dir%) {
+    for %i% in (all-files %build-dir%) {
+        delete-file %i%
+    }
+
+    for %i% in (all-dirs %build-dir%) {
+        delete-dir %i%
+    }
+
+    delete-dir %build-dir%
+}
+
+- task Pack-Files %dir-to-pack% %output-pak-file%
+set %files-to-pack% (get-files %dir-to-pack%)
+if (not (is-empty %files-to-pack%)) {
+    output %output-pak-file%
+    for %i% in %files-to-pack% {
+        input %i%
+    }
+}
+
+- operation Pack-Files %dir-to-pack% %output-pak-file%
+cpymo-tool pack %output-pak-file% (get-files %dir-to-pack%)
+
+- task Copy-File %src-file% %dest-file%
+input %src-file%
+output %dest-file%
+
+- operation Copy-File %src-file% %dest-file%
+copy-file %src-file% %dest-file%
+
+- task Copy-Dir %src% %dst%
+ensure-dir %dst%
+for %i% in (get-files %src%) { 
+    Copy-File %i% "%dst%/%i%"
+}
+

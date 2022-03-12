@@ -1,0 +1,3 @@
+- scene "startup"
+Hello World!
+@goto "startup"
