@@ -43,3 +43,6 @@ clean-build-dir "./publish"
 build
 cpymo %BUILD%
 
+- action build-diagram
+ykmc diagram mermaid "./script" "./diagram.mermaid" --lib "./lib"
+
