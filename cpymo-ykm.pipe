@@ -17,11 +17,11 @@ for %i% in [
 - operation clean-build-dir %build-dir%
 if (dir-exists %build-dir%) {
     for %i% in (all-files %build-dir%) {
-        delete-file %i%
+        delete-file "%build-dir%/%i%"
     }
 
     for %i% in (all-dirs %build-dir%) {
-        delete-dir %i%
+        delete-dir "%build-dir%/%i%"
     }
 
     delete-dir %build-dir%
@@ -32,12 +32,18 @@ set %files-to-pack% (get-files %dir-to-pack%)
 if (not (is-empty %files-to-pack%)) {
     output %output-pak-file%
     for %i% in %files-to-pack% {
-        input %i%
+        input "%dir-to-pack%/%i%"
     }
 }
 
 - operation Pack-Files %dir-to-pack% %output-pak-file%
-cpymo-tool pack %output-pak-file% (get-files %dir-to-pack%)
+set %files% (get-files %dir-to-pack%)
+set %paths% []
+for %file% in %files% {
+    set %paths% (add ["%dir-to-pack%/%file%"] %paths%)
+}
+
+cpymo-tool pack %output-pak-file% %paths%
 
 - task Copy-File %src-file% %dest-file%
 input %src-file%
@@ -47,9 +53,33 @@ output %dest-file%
 copy-file %src-file% %dest-file%
 
 - task Copy-Dir %src% %dst%
+ensure-dir %src%
 ensure-dir %dst%
 for %i% in (get-files %src%) { 
-    echo "%i%"
     Copy-File "%src%/%i%" "%dst%/%i%"
 }
+
+- task Compile-Script %src-file% %dst-file% %lib-files% %lib-dir%
+input %src-file%
+for %i% in %lib-files% {
+    input %i%
+}
+output %dst-file%
+
+- operation Compile-Script %src-file% %dst-file% %lib-files% %lib-dir%
+ykmc %src-file% --target-pymo %dst-file% --lib %lib-dir%
+
+- task Compile-Scripts %src-dir% %dst-dir% %lib-dir%
+set %lib-files% (get-files %lib-dir%)
+set %lib-paths% []
+for %lib-file% in %lib-files% {
+    set %lib-paths% (add %lib-paths% ["%lib-dir%/%lib-file%"])
+}
+
+set %src-files% (get-files %src-dir%)
+for %src-file% in %src-files% {
+    set %dst-filename% (change-extension ".txt" %src-file%)
+    Compile-Script "%src-dir%/%src-file%" "%dst-dir%/%dst-filename%" %lib-paths% %lib-dir%
+}
+
 

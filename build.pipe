@@ -1,27 +1,45 @@
 
-- include "cpymo_ykm.pipe"
+- include "cpymo-ykm.pipe"
 
-- action build
+- before action build
 set %SRC% "."
 set %BUILD% "./build"
+
+- action build
 ensure-build-dir %BUILD%
-Pack-Files "%SRC%/bg" "%BUILD%/bg/bg.pak"
-Pack-Files "%SRC%/chara" "%BUILD%/bg/chara.pak"
-Pack-Files "%SRC%/se" "%BUILD%/bg/se.pak"
-Pack-Files "%SRC%/voice" "%BUILD%/bg/voice.pak"
-#Copy-Dir "%SRC%/bg" "./build"
-Copy-Dir "%SRC%/bgm" "./build"
-#Copy-Dir "%SRC%/chara" "./build"
-#Copy-Dir "%SRC%/se" "./build"
-Copy-Dir (to-abs-path "%SRC%/system") "./build"
-Copy-Dir "%SRC%/video" "./build"
-#Copy-Dir "%SRC%/voice" "./build"
-Copy-File "%SRC%/gameconfig.txt" "./build/gameconfig.txt"
-Copy-File "%SRC%/icon.png" "./build/icon.png"
+Copy-Dir "%SRC%/bg" "%BUILD%/bg"
+Copy-Dir "%SRC%/chara" "%BUILD%/chara"
+Copy-Dir "%SRC%/se" "%BUILD%/se"
+Copy-Dir "%SRC%/voice" "%BUILD%/voice"
+Copy-Dir "%SRC%/bgm" "%BUILD%/bgm"
+Copy-Dir "%SRC%/system" "%BUILD%/system"
+Copy-Dir "%SRC%/video" "%BUILD%/video"
+Copy-File "%SRC%/gameconfig.txt" "%BUILD%/gameconfig.txt"
+Copy-File "%SRC%/icon.png" "%BUILD%/icon.png"
+Compile-Scripts "%SRC%/script" "%BUILD%/script" "%SRC%/lib"
+
+- before action publish
+set %SRC% "."
+set %PUBLISH% "./publish"
+
+- action publish
+ensure-build-dir %PUBLISH%
+Pack-Files "%SRC%/bg" "%PUBLISH%/bg/bg.pak"
+Pack-Files "%SRC%/chara" "%PUBLISH%/chara/chara.pak"
+Pack-Files "%SRC%/se" "%PUBLISH%/se/se.pak"
+Pack-Files "%SRC%/voice" "%PUBLISH%/voice/voice.pak"
+Copy-Dir "%SRC%/bgm" "%PUBLISH%/bgm"
+Copy-Dir "%SRC%/system" "%PUBLISH%/system"
+Copy-Dir "%SRC%/video" "%PUBLISH%/video"
+Copy-File "%SRC%/gameconfig.txt" "%PUBLISH%/gameconfig.txt"
+Copy-File "%SRC%/icon.png" "%PUBLISH%/icon.png"
+Compile-Scripts "%SRC%/script" "%PUBLISH%/script" "%SRC%/lib"
 
 - action clean
 clean-build-dir "./build"
+clean-build-dir "./publish"
 
 - action run
 build
-cpymo.exe "./build"
+cpymo %BUILD%
+
