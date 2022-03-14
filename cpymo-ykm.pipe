@@ -37,20 +37,14 @@ if (not (is-empty %files-to-pack%)) {
 }
 
 - operation Pack-Files %dir-to-pack% %output-pak-file%
-set %files% (get-files %dir-to-pack%)
-set %paths% []
-for %file% in %files% {
-    set %paths% (add ["%dir-to-pack%/%file%"] %paths%)
-}
-
-cpymo-tool pack %output-pak-file% %paths%
+cpymo-tool pack %output% %input%
 
 - task Copy-File %src-file% %dest-file%
 input %src-file%
 output %dest-file%
 
 - operation Copy-File %src-file% %dest-file%
-copy-file %src-file% %dest-file%
+copy-file (fst %input%) (fst %output%)
 
 - task Copy-Dir %src% %dst%
 ensure-dir %src%
@@ -81,5 +75,4 @@ for %src-file% in %src-files% {
     set %dst-filename% (change-extension ".txt" %src-file%)
     Compile-Script "%src-dir%/%src-file%" "%dst-dir%/%dst-filename%" %lib-paths% %lib-dir%
 }
-
 

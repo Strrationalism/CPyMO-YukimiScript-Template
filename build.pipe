@@ -1,9 +1,9 @@
-
 - include "cpymo-ykm.pipe"
 
-- before action build
+- before all
 set %SRC% "."
 set %BUILD% "./build"
+set %PUBLISH% "./publish"
 
 - action build
 ensure-build-dir %BUILD%
@@ -18,10 +18,6 @@ Copy-File "%SRC%/gameconfig.txt" "%BUILD%/gameconfig.txt"
 Copy-File "%SRC%/icon.png" "%BUILD%/icon.png"
 Compile-Scripts "%SRC%/script" "%BUILD%/script" "%SRC%/lib"
 
-- before action publish
-set %SRC% "."
-set %PUBLISH% "./publish"
-
 - action publish
 ensure-build-dir %PUBLISH%
 Pack-Files "%SRC%/bg" "%PUBLISH%/bg/bg.pak"
@@ -35,14 +31,23 @@ Copy-File "%SRC%/gameconfig.txt" "%PUBLISH%/gameconfig.txt"
 Copy-File "%SRC%/icon.png" "%PUBLISH%/icon.png"
 Compile-Scripts "%SRC%/script" "%PUBLISH%/script" "%SRC%/lib"
 
-- action clean
-clean-build-dir "./build"
-clean-build-dir "./publish"
-
 - action run
 build
 cpymo %BUILD%
 
 - action build-diagram
-ykmc diagram mermaid "./script" "./diagram.mermaid" --lib "./lib"
+ykmc diagram mermaid "%SRC%/script" "./diagram.mermaid" --lib "./lib"
 
+- action build-dgml
+ykmc diagram dgml "%SRC%/script" "./diagram.dgml" --lib "./lib"
+
+- action clean
+clean-build-dir %BUILD%
+clean-build-dir %PUBLISH%
+if (file-exists "./diagram.mermaid") {
+    delete-file "./diagram.mermaid"
+}
+
+if (file-exists "./diagram.dgml") {
+    delete-file "./diagram.dgml"
+}
