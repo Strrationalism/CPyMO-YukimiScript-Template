@@ -53,17 +53,18 @@ for %i% in (get-files %src%) {
     Copy-File "%src%/%i%" "%dst%/%i%"
 }
 
-- task Compile-Script %src-file% %dst-file% %lib-files% %lib-dir%
+- task Compile-Script %src-file% %dst-file% %lib-files% %lib-dir% %libpymo%
 input %src-file%
+input %libpymo%
 for %i% in %lib-files% {
     input %i%
 }
 output %dst-file%
 
-- operation Compile-Script %src-file% %dst-file% %lib-files% %lib-dir%
+- operation Compile-Script %src-file% %dst-file% %lib-files% %lib-dir% %libpymo%
 ykmc %src-file% --target-pymo %dst-file% --lib %lib-dir%
 
-- task Compile-Scripts %src-dir% %dst-dir% %lib-dir%
+- task Compile-Scripts %src-dir% %dst-dir% %lib-dir% %libpymo%
 set %lib-files% (get-files %lib-dir%)
 set %lib-paths% []
 for %lib-file% in %lib-files% {
@@ -73,6 +74,21 @@ for %lib-file% in %lib-files% {
 set %src-files% (get-files %src-dir%)
 for %src-file% in %src-files% {
     set %dst-filename% (change-extension ".txt" %src-file%)
-    Compile-Script "%src-dir%/%src-file%" "%dst-dir%/%dst-filename%" %lib-paths% %lib-dir%
+    Compile-Script "%src-dir%/%src-file%" "%dst-dir%/%dst-filename%" %lib-paths% %lib-dir% %libpymo%
 }
 
+- task Install-libpymo %target-dir%
+ensure-dir %target-dir%
+output "%target-dir%/libpymo.ykm"
+set %url% "https://raw.githubusercontent.com/Strrationalism/YukimiScript/main/libpymo.ykm"
+
+- operation Install-libpymo %target-dir% for windows
+PowerShell curl %url% -OutFile %output%
+
+- operation Install-libpymo %target-dir% for { macos, linux }
+curl %url% --output %output%
+
+- task Install-libpymo-IfNotInstalled %target-dir%
+if (not (file-exists "%target-dir%/libpymo.ykm")) {
+    Install-libpymo %target-dir%
+}

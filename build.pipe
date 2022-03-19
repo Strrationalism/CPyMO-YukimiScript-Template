@@ -16,7 +16,8 @@ Copy-Dir "%SRC%/system" "%BUILD%/system"
 Copy-Dir "%SRC%/video" "%BUILD%/video"
 Copy-File "%SRC%/gameconfig.txt" "%BUILD%/gameconfig.txt"
 Copy-File "%SRC%/icon.png" "%BUILD%/icon.png"
-Compile-Scripts "%SRC%/script" "%BUILD%/script" "%SRC%/lib"
+Install-libpymo-IfNotInstalled "%SRC%/lib"
+Compile-Scripts "%SRC%/script" "%BUILD%/script" "%SRC%/lib" "%SRC%/lib/libpymo.ykm"
 
 - action publish
 ensure-build-dir %PUBLISH%
@@ -29,7 +30,15 @@ Copy-Dir "%SRC%/system" "%PUBLISH%/system"
 Copy-Dir "%SRC%/video" "%PUBLISH%/video"
 Copy-File "%SRC%/gameconfig.txt" "%PUBLISH%/gameconfig.txt"
 Copy-File "%SRC%/icon.png" "%PUBLISH%/icon.png"
-Compile-Scripts "%SRC%/script" "%PUBLISH%/script" "%SRC%/lib"
+Install-libpymo-IfNotInstalled "%SRC%/lib"
+Compile-Scripts "%SRC%/script" "%PUBLISH%/script" "%SRC%/lib" "%SRC%/lib/libpymo.ykm"
+
+- action update-libpymo
+if (file-exists "%SRC%/lib/libpymo.ykm") {
+    delete-file "%SRC%/lib/libpymo.ykm"
+}
+
+Install-libpymo "%SRC%/lib"
 
 - action run
 build
@@ -50,4 +59,8 @@ if (file-exists "./diagram.mermaid") {
 
 if (file-exists "./diagram.dgml") {
     delete-file "./diagram.dgml"
+}
+
+if (file-exists "%SRC%/lib/libpymo.ykm") {
+    delete-file "%SRC%/lib/libpymo.ykm"
 }
