@@ -80,7 +80,7 @@ for %src-file% in %src-files% {
 - task Install-libpymo %target-dir%
 ensure-dir %target-dir%
 output "%target-dir%/libpymo.ykm"
-set %url% "https://raw.githubusercontent.com/Strrationalism/YukimiScript/main/libpymo.ykm"
+set %url% "https://raw.githubusercontent.com/Strrationalism/CPyMO/main/libpymo.ykm"
 
 - operation Install-libpymo %target-dir% for windows
 PowerShell curl %url% -OutFile %output%
