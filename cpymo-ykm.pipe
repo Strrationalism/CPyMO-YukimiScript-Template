@@ -37,7 +37,10 @@ if (not (is-empty %files-to-pack%)) {
 }
 
 - operation Pack-Files %dir-to-pack% %output-pak-file%
-cpymo-tool pack %output% %input%
+set %list-file% (change-extension ".txt" %output-pak-file%)
+write-text %input% %list-file%
+cpymo-tool pack %output% --file-list %list-file%
+delete-file %list-file%
 
 - task Copy-File %src-file% %dest-file%
 input %src-file%
