@@ -5,8 +5,8 @@ for %i% in [
     "%build-dir%/bg"
     "%build-dir%/bgm"
     "%build-dir%/chara"
-    "%build-dir%/se"
     "%build-dir%/video"
+    "%build-dir%/se"
     "%build-dir%/system"
     "%build-dir%/voice"
     "%build-dir%/script"
@@ -16,14 +16,6 @@ for %i% in [
 
 - operation clean-build-dir %build-dir%
 if (dir-exists %build-dir%) {
-    for %i% in (all-files %build-dir%) {
-        delete-file "%build-dir%/%i%"
-    }
-
-    for %i% in (all-dirs %build-dir%) {
-        delete-dir "%build-dir%/%i%"
-    }
-
     delete-dir %build-dir%
 }
 
