@@ -1,25 +1,5 @@
 - include "cpymo-ykm.pipe"
-
-- before all
-set %SRC% "."
-set %BUILD% "./build"
-set %PUBLISH% "./publish"
-set %LIBS% [
-    "%BUILD%/lib"
-    "%SRC%/lib"
-]
-
-set %BUILD-DIRS% [
-    "bg"
-    "bgm"
-    "chara"
-    "video"
-    "se"
-    "system"
-    "voice"
-    "script"
-    "lib"
-]
+- include "project-config.pipe"
 
 - action build
 ensure-dirs %BUILD% %BUILD-DIRS%
@@ -35,7 +15,6 @@ Copy-File "%SRC%/icon.png" "%BUILD%/icon.png"
 Install-libpymo-IfNotInstalled "%BUILD%/lib"
 Compile-Scripts "%BUILD%/script" %LIBS% [ "%SRC%/script" ]
 
-
 - action run
 build
 cpymo %BUILD%
@@ -48,7 +27,7 @@ ykmc diagram dgml "%SRC%/script" "./diagram.dgml" --lib "./lib"
 
 - action clean
 clean-build-dir %BUILD%
-clean-build-dir %PUBLISH%
+clean-build-dir %PUBLISH-DIR%
 if (file-exists "./diagram.mermaid") {
     delete-file "./diagram.mermaid"
 }
@@ -59,4 +38,20 @@ if (file-exists "./diagram.dgml") {
 
 if (file-exists "%SRC%/lib/libpymo.ykm") {
     delete-file "%SRC%/lib/libpymo.ykm"
+}
+
+- action publish
+build
+set %outdir% "%PUBLISH-DIR%/%PUBLISH-PACK-NAME%"
+Publish-Game %BUILD% %outdir% %PUBLISH-DIRS-PACK% %PUBLISH-DIRS-COPY%
+
+- after action publish
+set %outdir% "%PUBLISH-DIR%/%PUBLISH-PACK-NAME%"
+Zip-Dir %outdir% "%outdir%.zip"
+
+- action publish-all
+publish
+for %p% in %EXTRA-PLATFORMS% {
+    set %outdir% "%PUBLISH-DIR%/%PUBLISH-PACK-NAME%_%p%"
+    Publish-Game-To-Platform true %p% "%PUBLISH-DIR%/%PUBLISH-PACK-NAME%" %outdir%
 }

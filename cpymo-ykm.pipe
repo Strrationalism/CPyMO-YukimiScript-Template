@@ -109,5 +109,34 @@ for %i% in %srcs% {
 - operation Pack-Images %col% %dst% %srcs%
 cpymo-tool pack-images %dst% %col% %srcs%
 
+- task Publish-Game %build-dir% %dst-dir% %dirs-to-pack% %dirs-to-copy%
+ensure-dir %dst-dir%
+for %i% in %dirs-to-pack% {
+    ensure-dir "%dst-dir%/%i%"
+    Pack-Files "%build-dir%/%i%" "%dst-dir%/%i%/%i%.pak"
+}
 
+for %i% in %dirs-to-copy% {
+    ensure-dir "%dst-dir%/%i%"
+    Copy-Dir "%build-dir%/%i%" "%dst-dir%/%i%"
+}
 
+if (file-exists "%build-dir%/icon.png") {
+    Copy-File "%build-dir%/icon.png" "%dst-dir%/icon.png"
+}
+
+if (file-exists "%build-dir%/gameconfig.txt") {
+    Copy-File "%build-dir%/gameconfig.txt" "%dst-dir%/gameconfig.txt"
+}
+
+- task Publish-Game-To-Platform %zip% %platform% %default-publish-dir% %dst-dir%
+dirty
+
+- operation Publish-Game-To-Platform %zip% %platform% %default-publish-dir% %dst-dir%
+PowerShell pymo-converter.ps1 %platform% %default-publish-dir% %dst-dir%
+if %zip% { 
+    Zip-Dir %dst-dir% "%dst-dir%.zip" 
+}
+
+- operation Zip-Dir %dirs% %out%
+PowerShell Compress-Archive -Path %dirs% -DestinationPath %out%
