@@ -1,9 +1,4 @@
 
-- operation ensure-dirs %root-dir% %dirs%
-for %i% in %dirs% {
-    ensure-dir "%root-dir%/%i%"
-}
-
 - operation clean-build-dir %build-dir%
 if (dir-exists %build-dir%) {
     delete-dir %build-dir%
@@ -59,6 +54,7 @@ for %i% in %lib-dirs% {
 ykmc %src-file% --target-pymo %dst-file% %lib-arg%
 
 - task Compile-Scripts %dst-dir% %lib-dirs% %src-dirs%
+ensure-dir %dst-dir%
 for %src-dir% in %src-dirs% {
     for %src-file% in (get-files %src-dir%) {
         set %dst-file% (change-extension ".txt" %src-file%)
@@ -66,20 +62,11 @@ for %src-dir% in %src-dirs% {
     }
 }
 
-- task Install-libpymo %target-dir%
-ensure-dir %target-dir%
-output "%target-dir%/libpymo.ykm"
+- action Install-libpymo %target-dir%
 set %url% "https://raw.githubusercontent.com/Strrationalism/CPyMO/main/libpymo.ykm"
-
-- operation Install-libpymo %target-dir% for windows
-PowerShell curl %url% -OutFile %output%
-
-- operation Install-libpymo %target-dir% for { macos, linux }
-curl %url% --output %output%
-
-- task Install-libpymo-IfNotInstalled %target-dir%
+ensure-dir %target-dir%
 if (not (file-exists "%target-dir%/libpymo.ykm")) {
-    Install-libpymo %target-dir%
+    PowerShell curl %url% -OutFile "%target-dir%/libpymo.ykm"
 }
 
 - task Scale-Image %ratio-x% %ratio-y% %src-file% %dst-file%
@@ -108,6 +95,20 @@ for %i% in %srcs% {
 
 - operation Pack-Images %col% %dst% %srcs%
 cpymo-tool pack-images %dst% %col% %srcs%
+
+- task Copy-Source-To-Build-Dir %dirs-to-copy% %src-dir% %build-dir%
+for %i% in %dirs-to-copy% {
+    ensure-dir "%build-dir%/%i%"
+    Copy-Dir "%src-dir%/%i%" "%build-dir%/%i%"
+}
+
+if (file-exists "%src-dir%/gameconfig.txt") {
+    Copy-File "%src-dir%/gameconfig.txt" "%build-dir%/gameconfig.txt"
+}
+
+if (file-exists "%src-dir%/icon.png") {
+    Copy-File "%src-dir%/icon.png" "%build-dir%/icon.png"
+}
 
 - task Publish-Game %build-dir% %dst-dir% %dirs-to-pack% %dirs-to-copy%
 ensure-dir %dst-dir%
@@ -139,4 +140,4 @@ if %zip% {
 }
 
 - operation Zip-Dir %dirs% %out%
-PowerShell Compress-Archive -Path %dirs% -DestinationPath %out%
+PowerShell Compress-Archive -Path %dirs% -DestinationPath %out% -Force

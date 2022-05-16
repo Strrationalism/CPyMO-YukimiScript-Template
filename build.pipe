@@ -2,17 +2,8 @@
 - include "project-config.pipe"
 
 - action build
-ensure-dirs %BUILD% %BUILD-DIRS%
-Copy-Dir "%SRC%/bg" "%BUILD%/bg"
-Copy-Dir "%SRC%/chara" "%BUILD%/chara"
-Copy-Dir "%SRC%/se" "%BUILD%/se"
-Copy-Dir "%SRC%/voice" "%BUILD%/voice"
-Copy-Dir "%SRC%/bgm" "%BUILD%/bgm"
-Copy-Dir "%SRC%/system" "%BUILD%/system"
-Copy-Dir "%SRC%/video" "%BUILD%/video"
-Copy-File "%SRC%/gameconfig.txt" "%BUILD%/gameconfig.txt"
-Copy-File "%SRC%/icon.png" "%BUILD%/icon.png"
-Install-libpymo-IfNotInstalled "%BUILD%/lib"
+Install-libpymo "%BUILD%/lib"
+Copy-Source-To-Build-Dir %GAME-DIRS% %SRC% %BUILD%
 Compile-Scripts "%BUILD%/script" %LIBS% [ "%SRC%/script" ]
 
 - action run
@@ -36,14 +27,10 @@ if (file-exists "./diagram.dgml") {
     delete-file "./diagram.dgml"
 }
 
-if (file-exists "%SRC%/lib/libpymo.ykm") {
-    delete-file "%SRC%/lib/libpymo.ykm"
-}
-
 - action publish
 build
 set %outdir% "%PUBLISH-DIR%/%PUBLISH-PACK-NAME%"
-Publish-Game %BUILD% %outdir% %PUBLISH-DIRS-PACK% %PUBLISH-DIRS-COPY%
+Publish-Game %BUILD% %outdir% %GAME-DIRS-PACK% %GAME-DIRS-COPY%
 
 - after action publish
 set %outdir% "%PUBLISH-DIR%/%PUBLISH-PACK-NAME%"

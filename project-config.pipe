@@ -3,40 +3,33 @@ set %SRC% "."
 set %BUILD% "./build"
 set %LIBS% [
     "%BUILD%/lib"
-    "%SRC%/lib"
-]
-
-set %BUILD-DIRS% [
-    "bg"
-    "bgm"
-    "chara"
-    "video"
-    "se"
-    "system"
-    "voice"
-    "script"
-    "lib"
+    #"%SRC%/lib"
 ]
 
 set %PUBLISH-DIR% "./publish"
 set %PUBLISH-PACK-NAME% "cpymo_ykm_template"
 
-set %PUBLISH-DIRS-PACK% [
+set %GAME-DIRS-PACK% [
     "bg"
-    "chara"
-    "se"
-    "voice"
+    #"chara"
+    #"se"
+    #"voice"
 ]
 
-set %PUBLISH-DIRS-COPY% [
-    "bgm"
-    "video"
+set %GAME-DIRS-COPY% [
+    #"bgm"
+    #"video"
     "system"
     "script"
 ]
+
+set %GAME-DIRS% (add %GAME-DIRS-COPY% %GAME-DIRS-PACK%)
 
 set %EXTRA-PLATFORMS% [
     "3ds"
     "s60v3"
     "s60v5"
 ]
+
+
+
