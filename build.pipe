@@ -4,7 +4,7 @@
 - action build
 Install-libpymo "%BUILD%/lib"
 Copy-Source-To-Build-Dir %GAME-DIRS% %SRC% %BUILD%
-Compile-Scripts "%BUILD%/script" %LIBS% [ "%SRC%/script" ]
+Compile-Scripts "%BUILD%/script" %LIBS% [ "%SRC%/src" ]
 
 - action run
 build
