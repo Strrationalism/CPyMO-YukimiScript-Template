@@ -27,10 +27,11 @@ output %dest-file%
 copy-file (fst %input%) (fst %output%)
 
 - task Copy-Dir %src% %dst%
-ensure-dir %src%
-ensure-dir %dst%
-for %i% in (get-files %src%) { 
-    Copy-File "%src%/%i%" "%dst%/%i%"
+if (dir-exists %src%) {
+    ensure-dir %dst%
+    for %i% in (get-files %src%) { 
+        Copy-File "%src%/%i%" "%dst%/%i%"
+    }
 }
 
 - task Compile-Script %src-file% %dst-file% %lib-dirs%
