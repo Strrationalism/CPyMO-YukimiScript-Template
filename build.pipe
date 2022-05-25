@@ -34,6 +34,7 @@ Publish-Game %BUILD% %outdir% %GAME-DIRS-PACK% %GAME-DIRS-COPY%
 
 - after action publish
 set %outdir% "%PUBLISH-DIR%/%PUBLISH-PACK-NAME%"
+strip-publish %outdir%
 Zip-Dir %outdir% "%outdir%.zip"
 
 - action publish-all

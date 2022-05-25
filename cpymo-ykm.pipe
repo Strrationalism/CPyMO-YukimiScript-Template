@@ -142,3 +142,6 @@ if %zip% {
 
 - operation Zip-Dir %dirs% %out%
 PowerShell Compress-Archive -Path %dirs% -DestinationPath %out% -Force
+
+- operation strip-publish %publish-dir%
+PowerShell pymo-strip.ps1 %publish-dir%
