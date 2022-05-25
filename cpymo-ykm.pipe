@@ -135,7 +135,7 @@ if (file-exists "%build-dir%/gameconfig.txt") {
 dirty
 
 - operation Publish-Game-To-Platform %zip% %platform% %default-publish-dir% %dst-dir%
-PowerShell pymo-converter.ps1 %platform% %default-publish-dir% %dst-dir%
+PowerShell pymo-convert.ps1 %platform% %default-publish-dir% %dst-dir%
 if %zip% { 
     Zip-Dir %dst-dir% "%dst-dir%.zip" 
 }
