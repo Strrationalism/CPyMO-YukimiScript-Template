@@ -4,7 +4,7 @@
 
 依赖：
 
-* [Pipe构建系统](https://github.com/Strrationalism/Pipe) 版本至少为0.4
+* [Pipe构建系统](https://github.com/Strrationalism/Pipe) 版本至少为0.5
 * [CPyMO引擎](https://github.com/Strrationalism/CPyMO) 版本至少为1.0.9
 * [CPyMO-Tools](https://github.com/Strrationalism/CPyMO) 版本至少为1.0.9
 * [pymo-converter.ps1](https://github.com/Strrationalism/CPyMO)
