@@ -2,7 +2,7 @@
 set %SRC% "."
 set %BUILD% "./build"
 set %YKM-DEPS% [
-    #"-L%SRC%/lib"
+    #"%SRC%/lib"
 ]
 
 set %YKM-LIB-INSTALL-DIR% "%BUILD%/lib"
