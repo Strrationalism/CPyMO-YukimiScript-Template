@@ -1,3 +1,3 @@
 - scene "startup"
-Hello world from YukimiScript!
-@change "pymo_script"
+Hello World!
+@change "startup"

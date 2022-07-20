@@ -1,20 +1,22 @@
 - before all
 set %SRC% "."
 set %BUILD% "./build"
-set %YKM-DEPS% [
-    #"%SRC%/lib"
-]
 
 set %YKM-LIB-INSTALL-DIR% "%BUILD%/lib"
 
-set %YKM-SRC-DIRS% [
-    "%SRC%/src"
+set %YKM-DEPS% [
+    %YKM-LIB-INSTALL-DIR%
+    #"%SRC%/lib"
 ]
 
 set %YKM-COMPILE-OPTS% [
     "-L%YKM-LIB-INSTALL-DIR%"
     "-lpymo"
     #"-L%SRC%/lib"
+]
+
+set %YKM-SRC-DIRS% [
+    "%SRC%/src"
 ]
 
 set %PUBLISH-DIR% "./publish"
@@ -41,6 +43,4 @@ set %EXTRA-PLATFORMS% [
     "s60v3"
     "s60v5"
 ]
-
-
 
