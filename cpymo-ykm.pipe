@@ -34,41 +34,40 @@ if (dir-exists %src%) {
     }
 }
 
-- task Compile-Script %src-file% %dst-file% %lib-dirs%
+- task Compile-Script %src-file% %dst-file% %opts% %deps%
 input %src-file%
 output %dst-file%
-for %i% in %lib-dirs% {
-    for %j% in (get-files %i%) {
-        input "%i%/%j%"
+for %i% in %deps% {
+    if (file-exists %i%) {
+        input %i%
+    } else {
+        for %j% in (get-files %i%) {
+            input "%i%/%j%"
+        }
     }
 }
 
-- operation Compile-Script %src-file% %dst-file% %lib-dirs%
-set %lib-arg% []
-for %i% in %lib-dirs% {
-    set %lib-arg% (add %lib-arg% [
-        "--lib"
-        %i%
-    ])
-}
+- operation Compile-Script %src-file% %dst-file% %opts% %deps%
+ykmc %src-file% --target-pymo %dst-file% %opts%
 
-ykmc %src-file% --target-pymo %dst-file% %lib-arg%
-
-- task Compile-Scripts %dst-dir% %lib-dirs% %src-dirs%
+- task Compile-Scripts %dst-dir% %src-dirs% %opts% %deps%
 ensure-dir %dst-dir%
 for %src-dir% in %src-dirs% {
     for %src-file% in (get-files %src-dir%) {
         set %dst-file% (change-extension ".txt" %src-file%)
-        Compile-Script "%src-dir%/%src-file%" "%dst-dir%/%dst-file%" %lib-dirs%
+        Compile-Script "%src-dir%/%src-file%" "%dst-dir%/%dst-file%" %opts% %deps%
     }
+}
+
+- action Install-Library %url% %target-dir% %target-filename%
+ensure-dir %target-dir%
+if (not (file-exists "%target-dir%/%target-filename%")) {
+    PowerShell curl %url% -OutFile "%target-dir%/%target-filename%"
 }
 
 - action Install-libpymo %target-dir%
 set %url% "https://raw.githubusercontent.com/Strrationalism/CPyMO/main/libpymo.ykm"
-ensure-dir %target-dir%
-if (not (file-exists "%target-dir%/libpymo.ykm")) {
-    PowerShell curl %url% -OutFile "%target-dir%/libpymo.ykm"
-}
+Install-Library %url% %target-dir% "libpymo.ykm"
 
 - task Scale-Image %ratio-x% %ratio-y% %src-file% %dst-file%
 input %src-file%

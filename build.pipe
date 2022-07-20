@@ -2,9 +2,9 @@
 - include "project-config.pipe"
 
 - action build
-Install-libpymo "%BUILD%/lib"
+Install-libpymo %YKM-LIB-INSTALL-DIR%
 Copy-Source-To-Build-Dir %GAME-DIRS% %SRC% %BUILD%
-Compile-Scripts "%BUILD%/script" %LIBS% [ "%SRC%/src" ]
+Compile-Scripts "%BUILD%/script" %YKM-SRC-DIRS% %YKM-COMPILE-OPTS% %YKM-DEPS%
 
 - action run
 build

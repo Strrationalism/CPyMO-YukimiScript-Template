@@ -10,6 +10,6 @@
 * [pymo-converter.ps1](https://github.com/Strrationalism/CPyMO)
 * FFmpeg
 * [pymo-convert-audio-to-ogg.ps1]((https://github.com/Strrationalism/CPyMO))
-* [YukimiScript 编译器](https://github.com/Strrationalism/YukimiScript) 版本至少为0.8.2
+* [YukimiScript 编译器](https://github.com/Strrationalism/YukimiScript) 版本至少为0.8.3
 
 

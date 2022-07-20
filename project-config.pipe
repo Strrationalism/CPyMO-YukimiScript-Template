@@ -1,9 +1,20 @@
 - before all
 set %SRC% "."
 set %BUILD% "./build"
-set %LIBS% [
-    "%BUILD%/lib"
-    #"%SRC%/lib"
+set %YKM-DEPS% [
+    #"-L%SRC%/lib"
+]
+
+set %YKM-LIB-INSTALL-DIR% "%BUILD%/lib"
+
+set %YKM-SRC-DIRS% [
+    "%SRC%/src"
+]
+
+set %YKM-COMPILE-OPTS% [
+    "-L%YKM-LIB-INSTALL-DIR%"
+    "-lpymo"
+    #"-L%SRC%/lib"
 ]
 
 set %PUBLISH-DIR% "./publish"
