@@ -15,8 +15,10 @@ set %YKM-COMPILE-OPTS% [
     #"-L%SRC%/lib"
 ]
 
+set %YKM-SRC-SCENARIO-DIR% "%SRC%/src"
+
 set %YKM-SRC-DIRS% [
-    "%SRC%/src"
+    %YKM-SRC-SCENARIO-DIR%
 ]
 
 set %PUBLISH-DIR% "./publish"

@@ -11,10 +11,12 @@ build
 cpymo %BUILD%
 
 - action build-diagram
-ykmc diagram mermaid "%SRC%/script" "./diagram.mermaid" --lib "./lib"
+Install-libpymo %YKM-LIB-INSTALL-DIR%
+ykmc diagram mermaid %YKM-SRC-SCENARIO-DIR% "./diagram.mermaid" %YKM-COMPILE-OPTS%
 
 - action build-dgml
-ykmc diagram dgml "%SRC%/script" "./diagram.dgml" --lib "./lib"
+Install-libpymo %YKM-LIB-INSTALL-DIR%
+ykmc diagram dgml %YKM-SRC-SCENARIO-DIR% "./diagram.dgml" %YKM-COMPILE-OPTS%
 
 - action clean
 clean-build-dir %BUILD%
