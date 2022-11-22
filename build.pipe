@@ -33,6 +33,7 @@ if (file-exists "./diagram.dgml") {
 build
 set %outdir% "%PUBLISH-DIR%/%PUBLISH-PACK-NAME%"
 Publish-Game %BUILD% %outdir% %GAME-DIRS-PACK% %GAME-DIRS-COPY%
+Generate-Album-Cache %outdir%
 
 - after action publish
 set %outdir% "%PUBLISH-DIR%/%PUBLISH-PACK-NAME%"
