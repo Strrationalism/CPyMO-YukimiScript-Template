@@ -96,6 +96,17 @@ for %i% in %srcs% {
 - operation Pack-Images %col% %dst% %srcs%
 cpymo-tool pack-images %dst% %col% %srcs%
 
+- task Generate-Album-Cache %gamedir%
+input "%gamedir%/script/album_list.txt"
+input "%gamedir%/system/albumbg.png"
+for %i% in (get-files "%gamedir%/bg") {
+    input %i%
+}
+
+- operation Generate-Album-Cache %gamedir%
+cpymo-tool gen-album-cache "%gamedir%"
+
+
 - task Copy-Source-To-Build-Dir %dirs-to-copy% %src-dir% %build-dir%
 for %i% in %dirs-to-copy% {
     ensure-dir "%build-dir%/%i%"
