@@ -1,5 +1,5 @@
 
-- operation clean-build-dir %build-dir%
+- operation Clean-Build-Dir %build-dir%
 if (dir-exists %build-dir%) {
     delete-dir %build-dir%
 }
@@ -145,5 +145,5 @@ if %zip% {
 - operation Zip-Dir %dirs% %out%
 PowerShell Compress-Archive -Path %dirs% -DestinationPath %out% -Force
 
-- operation strip-publish %publish-dir%
+- operation Strip-Publish %publish-dir%
 PowerShell pymo-strip.ps1 %publish-dir%

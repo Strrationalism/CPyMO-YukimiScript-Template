@@ -19,8 +19,8 @@ Install-libpymo %YKM-LIB-INSTALL-DIR%
 ykmc diagram dgml %YKM-SRC-SCENARIO-DIR% "./diagram.dgml" %YKM-COMPILE-OPTS%
 
 - action clean
-clean-build-dir %BUILD%
-clean-build-dir %PUBLISH-DIR%
+Clean-Build-Dir %BUILD%
+Clean-Build-Dir %PUBLISH-DIR%
 if (file-exists "./diagram.mermaid") {
     delete-file "./diagram.mermaid"
 }
@@ -37,7 +37,7 @@ Publish-Game %BUILD% %outdir% %GAME-DIRS-PACK% %GAME-DIRS-COPY%
 - after action publish
 set %outdir% "%PUBLISH-DIR%/%PUBLISH-PACK-NAME%"
 Generate-Album-Cache %outdir%
-strip-publish %outdir%
+Strip-Publish %outdir%
 Zip-Dir %outdir% "%outdir%.zip"
 
 - action publish-all

@@ -44,5 +44,7 @@ set %EXTRA-PLATFORMS% [
     "3ds"
     "s60v3"
     "s60v5"
+    "psp"
+    "pymo-android"
 ]
 
